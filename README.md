@@ -22,4 +22,15 @@ Projeto Integrador II
 # SEMESTRE/ANO
 2º semestre de 2026
 
+# Conventional Commits
 
+| Tipo       | Descrição                                                                    |
+| ---------- | ---------------------------------------------------------------------------- |
+|  feat      | Adiciona uma nova funcionalidade ao sistema.                                 |
+|  fix       | Corrige um erro ou problema existente.                                       |
+|  docs      | Realiza alterações na documentação do projeto, como README.                  |
+|  style     | Altera formatação, espaçamento ou estilo do código sem modificar sua lógica. |
+|  refactor  | Melhora ou reorganiza o código sem alterar seu comportamento.                |
+|  test      | Adiciona, modifica ou corrige testes.                                        |
+|  chore     | Realiza tarefas de manutenção, configuração ou organização do projeto.       |
+|  build     | Altera configurações relacionadas à compilação ou dependências.              |
