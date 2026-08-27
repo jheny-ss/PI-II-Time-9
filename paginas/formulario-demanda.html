@@ -17,8 +17,11 @@ Tela: Cadastro/Edição de Demanda
         <h1>Cadastro de Demandas</h1>
 
         <!-- Modo Toggle apenas CSS ainda -->
-         <input type="checkbox" id="modo-toggle" hidden>
-         <label for="modo-toggle" class="switch-modo">Ver modo: Cadastro / Edição</label>
+        <input type="checkbox" id="modo-toggle" hidden>
+        <label for="modo-toggle" class="switch-modo">
+            <span class="opcao-cadastro">Cadastro</span>
+            <span class="opcao-edicao">Edição</span>
+        </label>
 
         <form class="form-demanda">
 
@@ -121,6 +124,11 @@ Tela: Cadastro/Edição de Demanda
 
 
             </aside>
+
+            <div class="form-acoes">
+                <button type="submit" class="btn btn-primario">Salvar</button>
+                <button type="button" class="btn btn-secundario">Cancelar</button>
+            </div>
 
         </form>
     </main>
