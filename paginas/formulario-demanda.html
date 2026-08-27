@@ -116,11 +116,15 @@ Tela: Cadastro/Edição de Demanda
 
                 <div class="campo">
                     <label for="prazo">Prazo de finalização</label>
-                    <input type="date" name="prazo" id="prazo">
+                    <input type="date" name="prazo" id="prazo" value="2026-09-07">
+
+                    <!-- exemplo estático do erro que a validação futura exibiria -->
+                    <span class="erro-validacao">⚠ Esta data coincide com um feriado nacional (Independência do Brasil). Escolha outra data.</span>
 
                     <!-- TODO: validar datas contra feriados nacionais -> usar API externa -->
-                     <small class="nota-campo">Esta data será validada contra feriados nacionais em etapa futura.</small>
+                    <small class="nota-campo">Esta data será validada contra feriados nacionais em etapa futura.</small>
                 </div>
+
 
 
             </aside>

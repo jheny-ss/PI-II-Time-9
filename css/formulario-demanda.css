@@ -176,3 +176,15 @@ main {
     font-style: italic;
     color: var(--cor-mint);
 }
+
+/* balão de erro (exemplo estático) */
+.erro-validacao {
+    display: block;
+    margin-top: 4px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background-color: var(--cor-vermelho);
+    color: var(--cor-texto);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
