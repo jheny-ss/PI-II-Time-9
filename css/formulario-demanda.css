@@ -1,0 +1,190 @@
+/*
+    Autor: Eduardo Zinetti Betini
+    Tela: Cadastro/Edição de Demandas
+*/
+
+/* reset geral -> margens e paddings */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Layout e design do grupo como variáveis reutilizáveis */
+:root {
+    --cor-fundo: #1C1F33;
+    --cor-texto: #ffffff;
+    --cor-mint: #a8e8d7;
+    --cor-verde: #b9ffc9;
+    --cor-roxo: #7c79c4;
+    --cor-vermelho: #D45A5A;
+}
+
+body {
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    font-family: Arial, sans-serif;
+}
+
+/* centraliza e limita a largura do conteúdo */
+main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Grid de 2 colunas: principal (Título/Descrição) > lateral (metadados) */
+.form-demanda {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+}
+
+/* faz com que os botões ocupem toda a largura, por baixo das duas colunas */
+.form-acoes {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* empilha label e campo verticalmente, com espaço entre os campos */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.campo label {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+/* estilo compartilahdo para os campos preenchíveis -> contorno branco, fundo transparente, cantos arredondados */
+.campo input,
+.campo select,
+.campo textarea {
+    background-color: transparent;
+    border: 2px solid var(--cor-texto);
+    border-radius: 30px;
+    padding: 10px 16px;
+    color: var(--cor-texto);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.campo textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* botões */ 
+.btn {
+    padding: 10px 24px;
+    border-radius: 30px;
+    border: 2px solid var(--cor-texto);
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-primario {
+    background-color: var(--cor-verde);
+    color: var(--cor-fundo);
+    border-color: var(--cor-verde);
+}
+
+.btn-secundario {
+    background-color: var(--cor-vermelho);
+    color: var(--cor-texto);
+}
+
+/* label checkbox estilizado como botão, serve como controle de visualização */
+.switch-modo {
+    display: inline-flex;
+    gap: 4px;
+    margin: 16px 0;
+    padding: 4px;
+    border: 2px solid var(--cor-roxo);
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.switch-modo span {
+    padding: 6px 18px;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: var(--cor-roxo);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* estado padrão (checkbox desmarcado): "Cadastro" fica destacado */
+.switch-modo .opcao-cadastro {
+    background-color: var(--cor-roxo);
+    color: var(--cor-fundo);
+}
+
+.modo-cadastro {
+    display: block;
+}
+
+.modo-edicao {
+    display: none;
+}
+
+#modo-toggle:checked ~ .form-demanda .modo-cadastro {
+    display: none;
+}
+
+#modo-toggle:checked ~ .form-demanda .modo-edicao {
+    display: block;
+}
+
+/* checkbox marcado (modo Edição): inverte o destaque */
+#modo-toggle:checked ~ .switch-modo .opcao-cadastro {
+    background-color: transparent;
+    color: var(--cor-roxo);
+}
+
+#modo-toggle:checked ~ .switch-modo .opcao-edicao {
+    background-color: var(--cor-roxo);
+    color: var(--cor-fundo);
+}
+
+/* contorno visível ao navegar por teclado (o checkbox real fica escondido) */
+#modo-toggle:focus-visible ~ .switch-modo {
+    outline: 2px solid var(--cor-mint);
+    outline-offset: 2px;
+}
+
+/* texto somente-leitura: mesma "caixa" visual dos campos editáveis, mas com borda tracejada pra sinalizar que não é editável, sem quebrar o alinhamento entre os dois modos */
+.valor-fixo {
+    padding: 10px 16px;
+    border: 2px dashed var(--cor-roxo);
+    border-radius: 30px;
+    color: var(--cor-texto);
+    opacity: 0.85;
+}
+
+/* nota do prazo: menor, em itálico, cor de destaque diferente pra ler como "aviso" */
+.nota-campo {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--cor-mint);
+}
+
+/* balão de erro (exemplo estático) */
+.erro-validacao {
+    display: block;
+    margin-top: 4px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background-color: var(--cor-vermelho);
+    color: var(--cor-texto);
+    font-size: 0.8rem;
+    font-weight: bold;
+}
