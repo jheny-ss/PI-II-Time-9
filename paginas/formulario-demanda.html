@@ -43,6 +43,7 @@ Tela: Cadastro/Edição de Demanda
                 <div class="campo">
                     <label for="tipo">Tipo da demanda</label>
                     <select name="tipo" id="tipo" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
                         <option value="tarefa">Tarefa</option>
                         <option value="bug">Defeito(Bug)</option>
                         <option value="melhoria">Melhoria</option>
@@ -54,6 +55,7 @@ Tela: Cadastro/Edição de Demanda
                 <div class="campo">
                     <label for="prioridade">Prioridade</label>
                     <select name="prioridade" id="prioridade" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
                         <option value="critica">Crítica</option>
                         <option value="alta">Alta</option>
                         <option value="media">Média</option>
@@ -88,7 +90,8 @@ Tela: Cadastro/Edição de Demanda
                 <div class="campo">
                     <label for="responsavel">Responsável</label>
                     <select name="responsavel" id="responsavel">
-                        <option value="" selected>Não atribuído</option>
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="nao_atribuido">Não atribuído</option>
                         <option value="sabrina">Sabrina</option>
                         <option value="ariana">Ariana</option>
                     </select>
