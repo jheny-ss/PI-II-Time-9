@@ -1,6 +1,7 @@
 /*
-    Autor: Eduardo Zinetti Betini
-    Tela: Cadastro/Edição de Demandas
+    Baseado no CSS original de: Eduardo Zinetti Betini
+    Adaptação: Arthur Peripolli da Silva
+    Tela: Dashboard
 */
 
 /* reset geral -> margens e paddings */
@@ -62,6 +63,7 @@ main {
     margin-bottom: 20px;
 }
 
+/* Organização da barra de busca e filtragem */
 .busca{
     flex-direction: row;
     display: flex;
@@ -69,7 +71,7 @@ main {
     align-items: center;
     padding: 1%;
 }
-
+/* Adaptação do botão de busca para o dashboard */
 .btn-busca{
     margin-bottom: 0px;
     margin: 1.2%;
@@ -82,23 +84,20 @@ main {
     width: 33%;
 }
 
+.informacoes{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 1.2rem;
+    align-items: center;
+    width: 200px;
+    height: 45px;
+    cursor: pointer;
+}
 
 .campo label {
     font-weight: bold;
     font-size: 0.9rem;
-}
-.filtro{
-    border: 2px solid var(--cor-texto);
-    border-radius: 15px;
-    width: 6%;
-    padding: 0.5%;
-    text-align: center;
-}
-.pesquisa{
-    border: 2px solid var(--cor-texto);
-    border-radius: 15px;
-    width: 30%;
-    padding: 0.5%;
 }
 
 /* estilo compartilahdo para os campos preenchíveis -> contorno branco, fundo transparente, cantos arredondados */
@@ -119,6 +118,7 @@ main {
     resize: vertical;
 }
 
+/* Contensor de demandas*/
 .painel{
     display: flex;
     flex-direction: row;
@@ -141,6 +141,7 @@ main {
         transparent 100%
     );
 }
+/* Modelo de demanda */
 .demanda{
     display: flex;
     flex-direction: column;
@@ -180,6 +181,8 @@ main {
 .demanda b{
     font-size: 1.2rem;
 }
+
+/* Botão de adicionar demanda */
 .adicionar-demanda{
     display: flex;
     flex-direction: row;
@@ -192,16 +195,7 @@ main {
     height: 45px;
     cursor: pointer;
 }
-.informacoes{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 1.2rem;
-    align-items: center;
-    width: 200px;
-    height: 45px;
-    cursor: pointer;
-}
+
 
 /* botões */ 
 .btn {
