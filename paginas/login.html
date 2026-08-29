@@ -1,0 +1,48 @@
+<!--
+Autor: Jhenyfer da Silva Souza 
+Tela: Login
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/login.css">
+</head>
+<body>
+
+    <main class="login-container">
+        <div class="login-caixa">
+            <div class="login-cabecalho">
+                <h1>Bem-vindo(a)</h1>
+                <p>Entre para acessar suas demandas</p>
+            </div>
+
+        <form class="form-login">
+
+            <div class="campo">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="seu@email.com" required autocomplete="username">
+            </div>
+
+            <div class="campo">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required autocomplete="current-password">
+            </div>
+
+            <div class="login-opcoes">
+                <a href="#">Esqueci minha senha</a>
+            </div>
+
+            <button type="submit" class="btn btn-primario">Entrar</button>
+
+        </form>
+
+        <p class="login-rodape">Não tem uma conta? <a href="#">Cadastre-se</a></p>
+
+    </main>
+
+</body>
+</html>

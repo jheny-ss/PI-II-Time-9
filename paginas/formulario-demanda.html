@@ -1,0 +1,144 @@
+<!--
+Autor: Eduardo Zinetti Betini
+Tela: Cadastro/Edição de Demanda
+-->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro/Edição de Demandas</title>
+    <link rel="stylesheet" href="../css/formulario-demanda.css">
+</head>
+<body>
+
+    <main>
+        <h1>Cadastro de Demandas</h1>
+
+        <!-- Modo Toggle apenas CSS ainda -->
+        <input type="checkbox" id="modo-toggle" hidden>
+        <label for="modo-toggle" class="switch-modo">
+            <span class="opcao-cadastro">Cadastro</span>
+            <span class="opcao-edicao">Edição</span>
+        </label>
+
+        <form class="form-demanda">
+
+            <div class="form-principal">
+                <!-- Título e Descrição -->
+                 <div class="campo">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" name="titulo" required>
+                 </div>
+
+                 <div class="campo">
+                    <label for="descricao">Descrição</label>
+                    <textarea name="descricao" id="descricao" required></textarea>
+                 </div>
+            </div>
+
+            <aside class="metadados-demanda">
+                <!-- tipo, prioridade, status, projeto, responsável, datas, prazo -->
+                <div class="campo">
+                    <label for="tipo">Tipo da demanda</label>
+                    <select name="tipo" id="tipo" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="tarefa">Tarefa</option>
+                        <option value="bug">Defeito(Bug)</option>
+                        <option value="melhoria">Melhoria</option>
+                        <option value="documentacao">Documentação</option>
+                    </select>
+
+                </div>
+
+                <div class="campo">
+                    <label for="prioridade">Prioridade</label>
+                    <select name="prioridade" id="prioridade" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="critica">Crítica</option>
+                        <option value="alta">Alta</option>
+                        <option value="media">Média</option>
+                        <option value="baixa">Baixa</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Status</label>
+
+                    <!-- modo cadastro: sempre fixo em "aberta", não é editável -->
+                     <p class="valor-fixo modo-cadastro">Aberta</p>
+
+                     <!-- modo edição: select mostrando só as transações válidas a partir do status atual -->
+                    <!-- simulação com demanda ja "aberta": "em andamento" ou "cancelada" -->
+                     <select name="status" id="status" class="modo-edicao">
+                        <option value="em_andamento">Em andamento</option>
+                        <option value="cancelada">Cancelada</option>
+                     </select>
+                </div>
+
+                <div class="campo">
+                    <label for="projeto">Projeto Associado</label>
+
+                    <select name="projeto" id="projeto" required>
+                        <option value="" disabled selected>Selecione um projeto</option>
+                        <option value="projeto_a">Projeto A</option>
+                        <option value="projeto_b">Projeto B</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="responsavel">Responsável</label>
+                    <select name="responsavel" id="responsavel">
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="nao_atribuido">Não atribuído</option>
+                        <option value="sabrina">Sabrina</option>
+                        <option value="ariana">Ariana</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Data de criação</label>
+
+                    <!-- modo cadastro: demanda não existente -> data gerada no cadastro -->
+                     <p class="valor-fixo modo-cadastro">Será definida automaticamente</p>
+
+                    <!-- modo edição: exibe data já registrada (exemplo simulado)-->
+                    <p class="valor-fixo modo-edicao">27/08/2026</p>
+                </div>
+
+                <div class="campo">
+                    <label>Data da última atualização</label>
+
+                    <!-- modo cadastro: ainda não houve nenhuma atualização -->
+                    <p class="valor-fixo modo-cadastro">Será definida automaticamente</p>
+
+                    <!-- modo edição: exibe a data da última atualização (exemplo simulado) -->
+                    <p class="valor-fixo modo-edicao">28/08/2026</p>
+                </div>
+
+                <div class="campo">
+                    <label for="prazo">Prazo de finalização</label>
+                    <input type="date" name="prazo" id="prazo" value="2026-09-07">
+
+                    <!-- exemplo estático do erro que a validação futura exibiria -->
+                    <span class="erro-validacao">⚠ Esta data coincide com um feriado nacional (Independência do Brasil). Escolha outra data.</span>
+
+                    <!-- TODO: validar datas contra feriados nacionais -> usar API externa -->
+                    <small class="nota-campo">Esta data será validada contra feriados nacionais em etapa futura.</small>
+                </div>
+
+
+
+            </aside>
+
+            <div class="form-acoes">
+                <button type="submit" class="btn btn-primario">Salvar</button>
+                <button type="button" class="btn btn-secundario">Cancelar</button>
+            </div>
+
+        </form>
+    </main>
+    
+</body>
+</html>
