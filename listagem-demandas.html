@@ -1,0 +1,86 @@
+<!--
+    Autor: Rafa
+    Tela: Listagem de Demandas
+-->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Demandas</title>
+    <link rel="stylesheet" href="formulario-demanda.css">
+    <link rel="stylesheet" href="listagem-demandas.css">
+</head>
+<body>
+
+    <main>
+        <h1>Listagem de Demandas</h1>
+
+        <!-- Filtros -->
+        <form class="barra-filtros">
+            <div class="campo">
+                <label for="busca">Buscar por título</label>
+                <input type="text" id="busca" name="busca">
+            </div>
+
+            <div class="campo">
+                <label for="filtro-status">Status</label>
+                <select id="filtro-status" name="status">
+                    <option value="">Todos</option>
+                    <option value="aberta">Aberta</option>
+                    <option value="andamento">Em andamento</option>
+                    <option value="revisao">Em revisão</option>
+                    <option value="concluida">Concluída</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+
+            <div class="campo">
+                <label for="filtro-prioridade">Prioridade</label>
+                <select id="filtro-prioridade" name="prioridade">
+                    <option value="">Todas</option>
+                    <option value="critica">Crítica</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Média</option>
+                    <option value="baixa">Baixa</option>
+                </select>
+            </div>
+
+            <div class="form-acoes">
+                <button type="submit" class="btn btn-primario">Filtrar</button>
+            </div>
+        </form>
+
+        <!-- Tabela com uma demanda de exemplo -->
+        <table class="tabela-demandas">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Tipo</th>
+                    <th>Prioridade</th>
+                    <th>Status</th>
+                    <th>Projeto</th>
+                    <th>Responsável</th>
+                    <th>Criada em</th>
+                    <th>Prazo</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Título da demanda</td>
+                    <td>Tipo</td>
+                    <td>Prioridade</td>
+                    <td>Status</td>
+                    <td>Nome do projeto</td>
+                    <td>Nome do responsável</td>
+                    <td>00/00/0000</td>
+                    <td>00/00/0000</td>
+                    <td><button class="btn btn-primario">Ver detalhes</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+</body>
+</html>
