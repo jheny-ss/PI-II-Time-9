@@ -30,11 +30,13 @@ Tela: Cadastro/Edição de Demanda
                  <div class="campo">
                     <label for="titulo">Título</label>
                     <input type="text" id="titulo" name="titulo" required>
+                    <span class="erro-validacao" id="erro-titulo"></span>
                  </div>
 
                  <div class="campo">
                     <label for="descricao">Descrição</label>
                     <textarea name="descricao" id="descricao" required></textarea>
+                    <span class="erro-validacao" id="erro-descricao"></span>
                  </div>
             </div>
 
@@ -49,7 +51,7 @@ Tela: Cadastro/Edição de Demanda
                         <option value="melhoria">Melhoria</option>
                         <option value="documentacao">Documentação</option>
                     </select>
-
+                    <span class="erro-validacao" id="erro-tipo"></span>
                 </div>
 
                 <div class="campo">
@@ -61,6 +63,7 @@ Tela: Cadastro/Edição de Demanda
                         <option value="media">Média</option>
                         <option value="baixa">Baixa</option>
                     </select>
+                    <span class="erro-validacao" id="erro-prioridade"></span>
                 </div>
 
                 <div class="campo">
@@ -71,10 +74,11 @@ Tela: Cadastro/Edição de Demanda
 
                      <!-- modo edição: select mostrando só as transações válidas a partir do status atual -->
                     <!-- simulação com demanda ja "aberta": "em andamento" ou "cancelada" -->
-                     <select name="status" id="status" class="modo-edicao">
+                     <select name="status" id="status" class="modo-edicao" data-status-atual="aberta">
                         <option value="em_andamento">Em andamento</option>
                         <option value="cancelada">Cancelada</option>
                      </select>
+                     <span class="erro-validacao" id="erro-status"></span>
                 </div>
 
                 <div class="campo">
@@ -85,6 +89,7 @@ Tela: Cadastro/Edição de Demanda
                         <option value="projeto_a">Projeto A</option>
                         <option value="projeto_b">Projeto B</option>
                     </select>
+                    <span class="erro-validacao" id="erro-projeto"></span>
                 </div>
 
                 <div class="campo">
@@ -95,6 +100,7 @@ Tela: Cadastro/Edição de Demanda
                         <option value="sabrina">Sabrina</option>
                         <option value="ariana">Ariana</option>
                     </select>
+                    <span class="erro-validacao" id="erro-responsavel"></span>
                 </div>
 
                 <div class="campo">
@@ -122,7 +128,7 @@ Tela: Cadastro/Edição de Demanda
                     <input type="date" name="prazo" id="prazo" value="2026-09-07">
 
                     <!-- exemplo estático do erro que a validação futura exibiria -->
-                    <span class="erro-validacao">⚠ Esta data coincide com um feriado nacional (Independência do Brasil). Escolha outra data.</span>
+                    <span class="erro-validacao" id="erro-prazo"></span>
 
                     <!-- TODO: validar datas contra feriados nacionais -> usar API externa -->
                     <small class="nota-campo">Esta data será validada contra feriados nacionais em etapa futura.</small>
@@ -133,12 +139,15 @@ Tela: Cadastro/Edição de Demanda
             </aside>
 
             <div class="form-acoes">
-                <button type="submit" class="btn btn-primario">Salvar</button>
+                <button type="submit" class="btn btn-primario" id="btn-salvar">Salvar</button>
                 <button type="button" class="btn btn-secundario">Cancelar</button>
             </div>
 
         </form>
     </main>
-    
+   
+    <script src="../js/formulario-demanda.js" defer></script>
+
+
 </body>
 </html>

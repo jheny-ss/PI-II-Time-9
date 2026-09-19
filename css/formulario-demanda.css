@@ -100,6 +100,12 @@ main {
     color: var(--cor-texto);
 }
 
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
 /* label checkbox estilizado como botão, serve como controle de visualização */
 .switch-modo {
     display: inline-flex;
@@ -187,4 +193,8 @@ main {
     color: var(--cor-texto);
     font-size: 0.8rem;
     font-weight: bold;
+}
+
+.erro-validacao:empty {
+    display: none;
 }
