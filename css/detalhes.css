@@ -26,6 +26,28 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.custom-navbar {
+    background-color: var(--cor-fundo);
+    border-bottom: 2px solid var(--cor-roxo);
+}
+
+.custom-navbar .nav-link {
+    color: var(--cor-texto);
+}
+
+.custom-navbar .nav-link.active,
+.custom-navbar .nav-link:hover {
+    color: var(--cor-mint);
+}
+
+.custom-footer {
+
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    border-top: 2px solid var(--cor-roxo);
+    margin-top: 2rem;
+}
+
 
 .cabecalho {
     text-align: center; 
@@ -109,4 +131,29 @@ body {
     max-width: 600px;
     min-height: 100px;
     max-height: 400px;
+}
+
+/* Ajustes gerais pra telas médias (tablet) */
+@media (max-width: 768px) {
+  .cabecalho h1 {
+    font-size: 1.6rem;
+  }
+
+  .container-detalhes,
+  .container {
+    padding: 1rem;
+  }
+}
+
+/* Ajustes pra telas pequenas (celular) */
+@media (max-width: 480px) {
+  .cabecalho h1 {
+    font-size: 1.3rem;
+  }
+
+  .campo dd,
+  .descricao textarea {
+    padding: 8px 12px; /* reduz um pouco o respiro interno */
+    font-size: 0.95rem;
+  }
 }
