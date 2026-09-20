@@ -33,16 +33,10 @@ main {
     padding: 40px 20px;
 }
 
-/* Grid de 2 colunas: principal (Título/Descrição) > lateral (metadados) */
-.form-demanda {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 24px;
-}
+
 
 /* faz com que os botões ocupem toda a largura, por baixo das duas colunas */
 .form-acoes {
-    grid-column: 1 / -1;
     display: flex;
     gap: 12px;
     justify-content: flex-end;
@@ -62,9 +56,9 @@ main {
 }
 
 /* estilo compartilahdo para os campos preenchíveis -> contorno branco, fundo transparente, cantos arredondados */
-.campo input,
-.campo select,
-.campo textarea {
+.form-demanda input,
+.form-demanda select,
+.form-demanda textarea {
     background-color: transparent;
     border: 2px solid var(--cor-texto);
     border-radius: 30px;
@@ -77,6 +71,28 @@ main {
 .campo textarea {
     min-height: 120px;
     resize: vertical;
+}
+
+/* linha compacta pros campos de metadados: label à esquerda, valor à direita, tudo numa linha só */
+.campo-linha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.campo-linha label {
+    width: 170px;
+    flex-shrink: 0;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.campo-linha select,
+.campo-linha input,
+.campo-linha p {
+    flex: 1;
+    margin: 0;
 }
 
 /* botões */ 
