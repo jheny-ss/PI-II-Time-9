@@ -26,6 +26,28 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.custom-navbar {
+    background-color: var(--cor-fundo);
+    border-bottom: 2px solid var(--cor-roxo);
+}
+
+.custom-navbar .nav-link {
+    color: var(--cor-texto);
+}
+
+.custom-navbar .nav-link.active,
+.custom-navbar .nav-link:hover {
+    color: var(--cor-mint);
+}
+
+.custom-footer {
+    
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+    border-top: 2px solid var(--cor-roxo);
+    margin-top: 2rem;
+}
+
 
 .cabecalho {
     text-align: center; 
