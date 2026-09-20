@@ -41,7 +41,7 @@ body {
 }
 
 .custom-footer {
-    
+
     background-color: var(--cor-fundo);
     color: var(--cor-texto);
     border-top: 2px solid var(--cor-roxo);
@@ -131,4 +131,29 @@ body {
     max-width: 600px;
     min-height: 100px;
     max-height: 400px;
+}
+
+/* Ajustes gerais pra telas médias (tablet) */
+@media (max-width: 768px) {
+  .cabecalho h1 {
+    font-size: 1.6rem;
+  }
+
+  .container-detalhes,
+  .container {
+    padding: 1rem;
+  }
+}
+
+/* Ajustes pra telas pequenas (celular) */
+@media (max-width: 480px) {
+  .cabecalho h1 {
+    font-size: 1.3rem;
+  }
+
+  .campo dd,
+  .descricao textarea {
+    padding: 8px 12px; /* reduz um pouco o respiro interno */
+    font-size: 0.95rem;
+  }
 }
