@@ -1,0 +1,44 @@
+/*
+    Autor: Arthur Peripolli da Silva
+    Adaptação: Reunião 3
+    Tela: Dashboard
+*/
+
+/* Layout e design do grupo como variáveis reutilizáveis */
+:root {
+    --cor-fundo: #1C1F33;
+    --cor-texto: #ffffff;
+    --cor-mint: #a8e8d7;
+    --cor-verde: #b9ffc9;
+    --cor-roxo: #7c79c4;
+    --cor-vermelho: #D45A5A;
+}
+
+body {
+    background-color: var(--cor-fundo);
+}
+
+/* Customizações dos Cards de Resumo */
+.custom-card-mint { background-color: var(--cor-mint); color: var(--cor-fundo);}
+.custom-card-verde { background-color: var(--cor-verde); color: var(--cor-fundo);}
+.custom-card-roxo { background-color: var(--cor-roxo); color: var(--cor-texto);}
+.custom-card-vermelho { background-color: var(--cor-vermelho); color: var(--cor-texto);}
+
+/*Design Demandas */
+.custom-demanda-card {
+    background-color: var(--cor-mint);
+    color: var(--cor-fundo);
+    border-top-right-radius: 50px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-demanda-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(168, 232, 215, 0.2);
+}
+
