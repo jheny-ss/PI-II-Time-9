@@ -1,0 +1,24 @@
+{
+  "name": "pi-ii-time-9",
+  "version": "1.0.0",
+  "description": "Repositório destinado ao desenvolvimento do Sistema de Acompanhamento de Demandas de Desenvolvimento, desenvolvido como parte do componente curricular Projeto Integrador II, do curso de Engenharia de Software (PUC- Campinas), no segundo semestre de 2026.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jheny-ss/PI-II-Time-9.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jheny-ss/PI-II-Time-9/issues"
+  },
+  "homepage": "https://github.com/jheny-ss/PI-II-Time-9#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
