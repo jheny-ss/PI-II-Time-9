@@ -18,6 +18,10 @@
     --cor-verde: #b9ffc9;
     --cor-roxo: #7c79c4;
     --cor-vermelho: #D45A5A;
+
+    /* tons extras só pro cartão da híbrida -> fundo um pouco mais claro que a página, pra dar profundidade */
+    --cor-superficie: #23283f;
+    --linha: rgba(255, 255, 255, 0.14);
 }
 
 body {
@@ -33,6 +37,80 @@ main {
     padding: 40px 20px;
 }
 
+
+/* ancora o glow decorativo do Título/Descrição (bloco "Compositor" da híbrida) */
+.form-principal {
+    position: relative;
+}
+
+/* glow em degradê, decorativo -> z-index negativo pra ficar atrás do texto */
+.form-principal::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    width: 280px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(124, 121, 196, 0.3), rgba(168, 232, 215, 0.1) 50%, transparent 72%);
+    filter: blur(8px);
+    pointer-events: none;
+    z-index: -1;
+}
+
+#titulo {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+#descricao {
+    font-size: 1rem;
+    line-height: 1.6;
+    min-height: 160px;
+}
+
+/* rótulo pequeno acima do Título, só pra situar que é uma demanda nova */
+.eyebrow-titulo {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cor-mint);
+    margin-bottom: 10px;
+}
+
+/* cartão que envolve o toggle + o formulário inteiro -> visual "console" da híbrida */
+.cartao-demanda {
+    background-color: var(--cor-superficie);
+    border: 1px solid var(--linha);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 24px;
+}
+
+/* barra de gradiente decorativa no topo do cartão */
+.cartao-demanda-barra {
+    height: 4px;
+    background: linear-gradient(90deg, var(--cor-mint), var(--cor-roxo));
+}
+
+.cartao-demanda-inner {
+    padding: 32px;
+}
+
+/* ícone pequeno antes do rótulo de cada linha de metadado -> sem caixa, a coluna é estreita demais pra um chip de 30px */
+.campo-linha-icone {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-mint);
+}
+
+.campo-linha-icone svg {
+    width: 16px;
+    height: 16px;
+}
 
 
 /* faz com que os botões ocupem toda a largura, por baixo das duas colunas */
@@ -68,6 +146,15 @@ main {
     font-size: 1rem;
 }
 
+/* tira a caixa só do Título/Descrição -> precisa vir DEPOIS do bloco .form-demanda input acima, mesma especificidade, quem vem depois ganha */
+.form-principal input,
+.form-principal textarea {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
 .campo textarea {
     min-height: 120px;
     resize: vertical;
@@ -77,22 +164,35 @@ main {
 .campo-linha {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 6px;
 }
 
 .campo-linha label {
-    width: 170px;
+    width: 150px;
     flex-shrink: 0;
     font-weight: bold;
     font-size: 0.9rem;
 }
 
+/* min-width: 0 é necessário pro flex:1 conseguir encolher de verdade -> sem isso, o select nunca fica menor que o texto da opção mais longa e estoura pra fora do cartão */
 .campo-linha select,
 .campo-linha input,
 .campo-linha p {
     flex: 1;
+    min-width: 0;
     margin: 0;
+}
+
+/* em telas estreitas o formulário empilha em 1 coluna só (ver Bootstrap col-lg-*) -> label largo de 150px sobra pouco espaço pro valor, então encolhe aqui */
+@media (max-width: 767.98px) {
+    .campo-linha {
+        gap: 8px;
+    }
+
+    .campo-linha label {
+        width: 112px;
+    }
 }
 
 /* botões */ 
@@ -124,6 +224,7 @@ main {
 
 /* label checkbox estilizado como botão, serve como controle de visualização */
 .switch-modo {
+    position: relative;
     display: inline-flex;
     gap: 4px;
     margin: 16px 0;
@@ -133,18 +234,35 @@ main {
     cursor: pointer;
 }
 
+/* "pino" que desliza por baixo do texto -> metade da largura do switch, anda pra direita quando o checkbox marca */
+.switch-modo::before {
+    content: "";
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: var(--cor-roxo);
+    border-radius: 30px;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+}
+
 .switch-modo span {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    text-align: center;
     padding: 6px 18px;
     border-radius: 30px;
     font-weight: bold;
     font-size: 0.85rem;
     color: var(--cor-roxo);
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
 }
 
-/* estado padrão (checkbox desmarcado): "Cadastro" fica destacado */
+/* estado padrão (checkbox desmarcado): "Cadastro" fica sobre o pino, cor de contraste */
 .switch-modo .opcao-cadastro {
-    background-color: var(--cor-roxo);
     color: var(--cor-fundo);
 }
 
@@ -164,14 +282,16 @@ main {
     display: block;
 }
 
-/* checkbox marcado (modo Edição): inverte o destaque */
+/* checkbox marcado (modo Edição): o pino desliza pra direita e o destaque de cor inverte */
+#modo-toggle:checked ~ .switch-modo::before {
+    transform: translateX(100%);
+}
+
 #modo-toggle:checked ~ .switch-modo .opcao-cadastro {
-    background-color: transparent;
     color: var(--cor-roxo);
 }
 
 #modo-toggle:checked ~ .switch-modo .opcao-edicao {
-    background-color: var(--cor-roxo);
     color: var(--cor-fundo);
 }
 
