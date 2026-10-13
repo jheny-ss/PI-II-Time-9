@@ -18,6 +18,11 @@ Tela: Cadastro/Edição de Demanda
     <main>
         <h1>Cadastro de Demandas</h1>
 
+        <!-- cartão que envolve o toggle + o formulário inteiro (visual "híbrida": console + compositor) -->
+        <div class="cartao-demanda">
+            <div class="cartao-demanda-barra"></div>
+            <div class="cartao-demanda-inner">
+
         <!-- Modo Toggle apenas CSS ainda -->
         <input type="checkbox" id="modo-toggle" hidden>
         <label for="modo-toggle" class="switch-modo">
@@ -27,7 +32,8 @@ Tela: Cadastro/Edição de Demanda
 
         <form class="form-demanda row">
 
-            <div class="form-principal col-lg-8">
+            <div class="form-principal col-lg-5">
+                <p class="eyebrow-titulo">Nova demanda</p>
                 <!-- Título e Descrição -->
                  <div class="campo">
                     <label for="titulo">Título</label>
@@ -42,9 +48,10 @@ Tela: Cadastro/Edição de Demanda
                  </div>
             </div>
 
-            <aside class="metadados-demanda col-lg-4">
+            <aside class="metadados-demanda col-lg-7">
                 <!-- tipo, prioridade, status, projeto, responsável, datas, prazo -->
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 11.6 12.4 3.4A2 2 0 0 0 11 3H4a1 1 0 0 0-1 1v7a2 2 0 0 0 .6 1.4l8.2 8.2a2 2 0 0 0 2.8 0l6-6a2 2 0 0 0 0-2.8Z"/><circle cx="7.5" cy="7.5" r="1"/></svg></span>
                     <label for="tipo">Tipo da demanda</label>
                     <select name="tipo" id="tipo" required>
                         <option value="" disabled selected>Selecione uma opção</option>
@@ -57,6 +64,7 @@ Tela: Cadastro/Edição de Demanda
                 <span class="erro-validacao" id="erro-tipo"></span>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.4 8.4 8 10 4.6-1.6 8-5 8-10V6Z"/></svg></span>
                     <label for="prioridade">Prioridade</label>
                     <select name="prioridade" id="prioridade" required>
                         <option value="" disabled selected>Selecione uma opção</option>
@@ -69,6 +77,7 @@ Tela: Cadastro/Edição de Demanda
                 <span class="erro-validacao" id="erro-prioridade"></span>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
                     <label>Status</label>
 
                     <!-- modo cadastro: sempre fixo em "aberta", não é editável -->
@@ -84,6 +93,7 @@ Tela: Cadastro/Edição de Demanda
                 <span class="erro-validacao" id="erro-status"></span>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>
                     <label for="projeto">Projeto Associado</label>
                     <select name="projeto" id="projeto" required>
                         <option value="" disabled selected>Selecione um projeto</option>
@@ -94,6 +104,7 @@ Tela: Cadastro/Edição de Demanda
                 <span class="erro-validacao" id="erro-projeto"></span>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg></span>
                     <label for="responsavel">Responsável</label>
                     <select name="responsavel" id="responsavel">
                         <option value="" disabled selected>Selecione uma opção</option>
@@ -105,6 +116,7 @@ Tela: Cadastro/Edição de Demanda
                 <span class="erro-validacao" id="erro-responsavel"></span>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
                     <label>Data de criação</label>
 
                     <!-- modo cadastro: demanda não existente -> data gerada no cadastro -->
@@ -115,6 +127,7 @@ Tela: Cadastro/Edição de Demanda
                 </div>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
                     <label>Data da última atualização</label>
 
                     <!-- modo cadastro: ainda não houve nenhuma atualização -->
@@ -125,6 +138,7 @@ Tela: Cadastro/Edição de Demanda
                 </div>
 
                 <div class="campo-linha">
+                    <span class="campo-linha-icone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
                     <label for="prazo">Prazo de finalização</label>
                     <input type="date" name="prazo" id="prazo" value="2026-09-07">
                 </div>
@@ -144,6 +158,9 @@ Tela: Cadastro/Edição de Demanda
             </div>
 
         </form>
+
+            </div>
+        </div>
     </main>
    
     <script src="../javascript/formulario-demanda.js" defer></script>
