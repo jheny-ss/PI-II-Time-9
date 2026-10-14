@@ -22,6 +22,21 @@ Projeto Integrador II
 # SEMESTRE/ANO
 2º semestre de 2026
 
+# RODAR O PROJETO
+
+dependencias: 
+npm install express
+npm install -D typescript tsx @types/node @types/express
+
+
+cd backend
+npm install
+npm run dev
+
+Importante: npm start executa o código compilado (lib/index.js). Em uma máquina nova a pasta lib/ ainda não existe, então rode npm run build antes, ou use npm run dev, que compila e inicia sozinho.
+
+O servidor inicia em http://localhost:3000. Para testar, acesse a rota inicial no navegador: http://localhost:3000/.
+
 # Conventional Commits
 
 | Tipo       | Descrição                                                                    |
