@@ -2,9 +2,16 @@
 import dados from './dados.json' with { type: 'json' };
 
 export type Perfil = 'Administrador' | 'Líder de Projeto' | 'Membro da Equipe';
-export type TipoDemanda = 'Tarefa' | 'Defeito' | 'Melhoria' | 'Documentação';
-export type Prioridade = 'Crítica' | 'Alta' | 'Média' | 'Baixa';
-export type StatusDemanda = 'Aberta' | 'Em andamento' | 'Em revisão' | 'Concluída' | 'Cancelada';
+
+export const TIPOS_DEMANDA = ['Tarefa', 'Defeito', 'Melhoria', 'Documentação'] as const;
+export type TipoDemanda = (typeof TIPOS_DEMANDA)[number];
+
+export const PRIORIDADES = ['Crítica', 'Alta', 'Média', 'Baixa'] as const;
+export type Prioridade = (typeof PRIORIDADES)[number];
+
+export const STATUS_DEMANDA = ['Aberta', 'Em andamento', 'Em revisão', 'Concluída', 'Cancelada'] as const;
+export type StatusDemanda = (typeof STATUS_DEMANDA)[number];
+
 
 export interface Usuario {
     id: number;
@@ -12,6 +19,7 @@ export interface Usuario {
     email: string;
     senha: string;
     perfil: Perfil;
+    projetoIds: number[]; // projetos aos quais o usuário está vinculado
 }
 
 export interface Projeto {
@@ -20,19 +28,6 @@ export interface Projeto {
     descricao: string;
 }
 
-export interface Demanda {
-    id: number;
-    titulo: string;
-    descricao: string;
-    tipo: TipoDemanda;
-    prioridade: Prioridade;
-    status: StatusDemanda;
-    projetoId: number;
-    responsavelId: number | null;
-    dataCriacao: string;
-    dataAtualizacao: string;
-    prazoFinalizacao: string | null;
-}
 
 export interface Comentario {
     id: number;
@@ -45,5 +40,6 @@ export interface Comentario {
 // Arrays em memória: os POSTs da equipe fazem push neles (os dados se perdem ao reiniciar o servidor).
 export const usuarios: Usuario[] = dados.usuarios as Usuario[];
 export const projetos: Projeto[] = dados.projetos as Projeto[];
-export const demandas: Demanda[] = dados.demandas as Demanda[];
+export type { Demanda } from './demandas.js';
+export { demandas } from './demandas.js';
 export const comentarios: Comentario[] = dados.comentarios as Comentario[];
