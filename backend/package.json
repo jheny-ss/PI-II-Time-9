@@ -1,0 +1,22 @@
+
+{
+  "name": "pi-ii-time-9",
+  "version": "1.0.0",
+  "description": "Sistema de Acompanhamento de Demandas de Desenvolvimento",
+  "type": "module",
+  "main": "lib/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node lib/index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "tsx": "latest",
+    "typescript": "latest"
+  }
+}
