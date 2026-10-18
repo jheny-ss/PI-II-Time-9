@@ -4,10 +4,9 @@ import loginRouter from './rotas/login.js';
 import projetosRouter from './rotas/projetos.js';
 import demandasRouter from './rotas/demandas.js';
 import detalhesRouter from './rotas/detalhes.js';
+import dashboardRouter from './rotas/dashboard.js';
 import listagemRouter from './rotas/listagem.js';
-
 // Cada integrante importa aqui o arquivo da sua rota, por exemplo:
-// import dashboardRouter from './rotas/dashboard';
 // import demandasRouter from './rotas/demandas';
 
 const app = express();
@@ -24,7 +23,7 @@ app.get('/', (_req: Request, res: Response) => {
 // Registro das rotas
 app.use(loginRouter);
 app.use(projetosRouter);
-// app.use(dashboardRouter);
+app.use(dashboardRouter);
 app.use(listagemRouter);
 app.use(demandasRouter);
 app.use(detalhesRouter);
