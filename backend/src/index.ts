@@ -4,8 +4,8 @@ import loginRouter from './rotas/login.js';
 import projetosRouter from './rotas/projetos.js';
 import demandasRouter from './rotas/demandas.js';
 import detalhesRouter from './rotas/detalhes.js';
+import dashboardRouter from './rotas/dashboard.js';
 // Cada integrante importa aqui o arquivo da sua rota, por exemplo:
-// import dashboardRouter from './rotas/dashboard';
 // import demandasRouter from './rotas/demandas';
 
 const app = express();
