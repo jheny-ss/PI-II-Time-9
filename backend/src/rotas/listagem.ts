@@ -1,23 +1,7 @@
 /*
-Autor: Rafa
+Autor: Rafael
 
-Rota de listagem de demandas: GET /demandas
-
-O que ela faz (Documento de Visão, itens 2.2.9 e 2.3, e Reunião 4):
-  - lista as demandas com id, título, tipo, prioridade, status, projeto,
-    responsável, data de criação e prazo de finalização;
-  - FILTRA por parâmetros na URL (todos opcionais; se vários forem
-    informados, a demanda precisa atender a TODOS):
-        status       -> Aberta, Em andamento, Em revisão, Concluída, Cancelada
-        prioridade   -> Crítica, Alta, Média, Baixa
-        tipo         -> Tarefa, Defeito, Melhoria, Documentação
-        responsavel  -> id do usuário responsável (número)
-        projeto      -> id do projeto (número)
-  - BUSCA por texto no título ou na descrição: ?busca=login
-  - ORDENA: ?ordenarPor=prioridade | dataCriacao | prazo | status
-            &ordem=asc | desc   (padrão: asc)
-
-Exemplos:
+Exemplos no thunderclient:
   /demandas
   /demandas?status=Aberta&prioridade=Alta
   /demandas?tipo=Defeito&busca=login
@@ -33,8 +17,8 @@ Observações:
   - Parâmetro vazio (ex.: ?status=) é tratado como "não informado",
     como acontece com a opção "Todos" do formulário da tela.
   - Demandas sem prazo sempre ficam no fim quando ordenadas por prazo.
-  - A senha dos usuários nunca é lida aqui: só pegamos o nome do responsável.
 */
+
 import express from 'express';
 import type { Request, Response } from 'express';
 import {
