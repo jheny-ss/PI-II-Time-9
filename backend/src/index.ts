@@ -9,6 +9,9 @@ import listagemRouter from './rotas/listagem.js';
 // Cada integrante importa aqui o arquivo da sua rota, por exemplo:
 // import demandasRouter from './rotas/demandas';
 
+import { initPool, closePool } from './db.js';
+
+
 const app = express();
 const PORTA = Number(process.env.PORT) || 3000;
 
@@ -43,6 +46,32 @@ app.use((erro: any, _req: Request, res: Response, _next: NextFunction) => {
     res.status(500).json({ erro: 'Erro interno do servidor.' });
 });
 
-app.listen(PORTA, () => {
-    console.log(`Servidor rodando em http://localhost:${PORTA}`);
-});
+/*espera o pool do oracle ficar pronto antes de abrir a porta http, se falhar, encerra o processo pra não subir quebrado*/
+async function iniciarServidor() {
+    try {
+        await initPool();
+        app.listen(PORTA, () => {
+            console.log(`Servidor rodando em http://localhost:${PORTA}`);
+        });
+        process.on('SIGINT', encerrarServidor);
+        process.on('SIGTERM', encerrarServidor);
+    } catch (erro) {
+        console.error('Falha ao iniciar o servidor:', erro);
+        process.exit(1);
+    }
+}
+
+/*fecha o pool de conexões antes de encerrar o processo (chamado pelo ctrl+c*/
+async function encerrarServidor() {
+    try {
+        await closePool();
+        console.log('Pool de conexões encerrado.');
+        process.exit(0);
+    } catch (erro) {
+        console.error('Falha ao encerrar o pool:', erro);
+        process.exit(1);
+    }
+}
+
+/*dispara tudo quando o arquivo roda*/
+iniciarServidor();
