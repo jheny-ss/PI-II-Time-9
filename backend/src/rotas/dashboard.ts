@@ -28,7 +28,7 @@ router.get('/dashboard', (req: Request, res: Response) => {
     // Que nao estejam Concluidas ou Canceladas
     const statusEmAberto = ['Aberta', 'Em andamento', 'Em revisão'];
 
-    const criticasEmAberto = demandas.filter(d => d.prioridade === 'Critica' && statusEmAberto.includes(d.status));
+    const criticasEmAberto = demandas.filter(d => d.prioridade === 'Crítica' && statusEmAberto.includes(d.status));
 
     // Demandas proximas do Prazo
     // Em aberto cujo prazo em 7 dias ou atrasadas
