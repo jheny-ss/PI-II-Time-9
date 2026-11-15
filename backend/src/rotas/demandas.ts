@@ -5,6 +5,7 @@ Autor: Eduardo Zinetti Betini
 import { Router, Request, Response } from 'express';
 import { TIPOS_DEMANDA, PRIORIDADES, projetos, usuarios, demandas } from '../dados/banco.js';
 import type { Demanda } from '../dados/banco.js';
+import { getConn } from '../db.js';
 
 // confere se a data existe de fato (new Date sozinho não pega casos como 30/02, ele joga pra março)
 function dataValida(str: string): boolean {
@@ -81,6 +82,73 @@ router.post('/demandas', (req: Request, res: Response) => {
     // 201: demanda criada com sucesso
     demandas.push(novaDemanda);
     res.status(201).json(novaDemanda);
+});
+
+// put /demandas/:id: edição dos dados básicos (título, descrição, tipo) de uma demanda já existente no banco.
+// responsável, prioridade e prazo não entram aqui: essas trocas são restritas por perfil e exigem checagem de feriado + registro de histórico.
+router.put('/demandas/:id', async (req: Request, res: Response) => {
+    const id = Number(req.params.id);
+
+    // id da url precisa ser um inteiro positivo
+    if (!Number.isInteger(id) || id <= 0) {
+        res.status(400).json({ erro: 'Id inválido.' });
+        return;
+    }
+
+    const corpo = req.body ?? {};
+    const { titulo, descricao, tipo } = corpo;
+
+    const erros: string[] = [];
+
+    if (typeof titulo !== 'string' || titulo.trim() === '') erros.push('O campo "título" é obrigatório.');
+    if (typeof descricao !== 'string' || descricao.trim() === '') erros.push('O campo "descrição" é obrigatório.');
+    if (typeof tipo !== 'string' || tipo.trim() === '') erros.push('O campo "tipo" é obrigatório.');
+
+    if (typeof tipo === 'string' && tipo.trim() !== '' && !TIPOS_DEMANDA.includes(tipo as any)) {
+        erros.push(`Tipo inválido. Use um dos seguintes: ${TIPOS_DEMANDA.join(', ')}.`);
+    }
+
+    if (erros.length > 0) {
+        res.status(400).json({ erro: erros.join(' ') });
+        return;
+    }
+
+    let conn;
+    try {
+        conn = await getConn();
+
+        // data_atualizacao é sempre definida pelo servidor (sysdate do banco), nunca recebida do cliente.
+        // o id_tipo é resolvido pelo nome na própria query, igual nos seeds (os ids da identity não são previsíveis)
+        const atualizacao = await conn.execute(
+            `UPDATE DEMANDA
+                SET TITULO = :titulo,
+                    DESCRICAO = :descricao,
+                    ID_TIPO = (SELECT ID_TIPO FROM TIPO_DEMANDA WHERE NOME = :tipo),
+                    DATA_ATUALIZACAO = SYSTIMESTAMP
+              WHERE ID_DEMANDA = :id`,
+            { titulo, descricao, tipo, id },
+            { autoCommit: true }
+        );
+
+        // rowsAffected = 0 quer dizer que não existe demanda com esse id
+        if (atualizacao.rowsAffected === 0) {
+            res.status(404).json({ erro: 'Demanda não encontrada.' });
+            return;
+        }
+
+        // busca a demanda já atualizada na view, que devolve os nomes em vez dos ids
+        const resultado = await conn.execute(
+            `SELECT * FROM VW_DEMANDA_LISTAGEM WHERE ID_DEMANDA = :id`,
+            { id }
+        );
+
+        res.status(200).json(resultado.rows?.[0]);
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ erro: 'Erro ao atualizar demanda.' });
+    } finally {
+        if (conn) await conn.close();
+    }
 });
 
 export default router;
