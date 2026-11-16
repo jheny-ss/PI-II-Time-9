@@ -22,89 +22,131 @@ Tela: Dashboard
     </header>
 
     <main class="container">
-        <!-- Seção: Formulário e Busca -->
-         <section id="formulario" class="mb-5">
-            <form id="formBusca" class="row">
+        <!-- Alerta de erro da API (exibido na tela caso a requisição falhe) -->
+        <div id="erroApi" class="alert alert-danger d-none" role="alert"></div>
+
+        <!-- Seção: Formulário e Busca (Validação Reunião 3 + filtro rápido nos cards) -->
+        <section id="formulario" class="mb-5">
+            <form id="formBusca" class="row align-items-end">
                 <div class="col-12 col-md-8 mb-3">
                     <label for="inputBusca" class="form-label text-white fw-bold">
-                        Buscar Demanda
+                        Buscar Demanda no Dashboard
                     </label>
                     <input type="text" id="inputBusca" class="form-control rounded-pill" placeholder="Digite um título ou descrição">
                     <div id="erroBusca" class="text-danger mt-1 d-none">
                         <small>O campo de busca não pode estar vazio</small>
                     </div>
-
-                    <div class="col-12 col-md-4 mb-3 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn btn-success w-100 rounded-pill fw-bold">Buscar</button>
-                        <button type="button" class="btn btn-secondary w-100 rounded-pill fw-bold">Filtros</button>
-                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-success w-100 rounded-pill fw-bold">Buscar</button>
+                    <button type="button" id="btnLimpar" class="btn btn-secondary w-100 rounded-pill fw-bold">Limpar</button>
                 </div>
             </form>
-         </section>
+        </section>
 
-         <!-- Seção: Resumo -->
-          <section id="resumo" class="mb-5">
-            <h4 class="text-white mb-3">Informações Resumidas</h4>
+        <!-- Seção: Resumo Principal e Status -->
+        <section id="resumo" class="mb-5">
+            <h4 class="text-white mb-3">Resumo Geral e por Status</h4>
             <div class="row">
-                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
                     <div class="card text-center h-100 custom-card-mint">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Total</h5>
-                            <p class="card-text fs-2">42</p>
+                            <h6 class="card-title fw-bold">Total</h6>
+                            <p id="totalDemandas" class="card-text fs-2 mb-0">-</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
                     <div class="card text-center h-100 custom-card-roxo">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Em Andamento</h5>
-                            <p class="card-text fs-2">15</p>
+                            <h6 class="card-title fw-bold">Abertas</h6>
+                            <p id="statusAberta" class="card-text fs-2 mb-0">-</p>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
                     <div class="card text-center h-100 custom-card-mint">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Críticas Abertas</h5>
-                            <p class="card-text fs-2">3</p>
+                            <h6 class="card-title fw-bold">Em Andamento</h6>
+                            <p id="statusAndamento" class="card-text fs-2 mb-0">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
+                    <div class="card text-center h-100 custom-card-roxo">
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold">Em Revisão</h6>
+                            <p id="statusRevisao" class="card-text fs-2 mb-0">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
+                    <div class="card text-center h-100 custom-card-mint">
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold">Concluídas</h6>
+                            <p id="statusConcluida" class="card-text fs-2 mb-0">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-2 mb-3">
+                    <div class="card text-center h-100 custom-card-roxo">
+                        <div class="card-body">
+                            <h6 class="card-title fw-bold">Canceladas</h6>
+                            <p id="statusCancelada" class="card-text fs-2 mb-0">-</p>
                         </div>
                     </div>
                 </div>
             </div>
-          </section>
 
-          <!-- Seção: Lista de Demandas -->
-           <section id="lista" class="mb-5">
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card h-100 text-center custom-demanda-card">
-                        <img src="https://pngmagic.com/webp_images/bright-plain-white-background-hd_YA6.webp" class="card-img-top p-3 rounded" alt="Demanda 01">
+            <!-- Quantidades por Prioridade e por Tipo -->
+            <div class="row mt-2">
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="card h-100 custom-card-mint">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Demanda 01</h5>
-                            <hr>
-                            <p class="card-text">Descrição breve da demanda e seu objetivo principal</p>
-                            <span class="badge bg-danger">Crítica</span>
-                            <span class="badge bg-warning text-dark">Aberta</span>
+                            <h5 class="card-title fw-bold">Por Prioridade</h5>
+                            <div class="d-flex justify-content-around text-center mt-3">
+                                <div><small class="fw-bold d-block">Crítica</small><span id="prioCritica" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Alta</small><span id="prioAlta" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Média</small><span id="prioMedia" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Baixa</small><span id="prioBaixa" class="fs-4">-</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-sm-6 col-md-4 mb-4">
-                    <div class="card h-100 text-center custom-demanda-card">
-                        <img src="https://pngmagic.com/webp_images/bright-plain-white-background-hd_YA6.webp" class="card-img-top p-3 rounded" alt="Demanda 01">
+                <div class="col-12 col-md-6 mb-3">
+                    <div class="card h-100 custom-card-roxo">
                         <div class="card-body">
-                            <h5 class="card-title fw-bold">Demanda 02</h5>
-                            <hr>
-                            <p class="card-text">Descrição breve da demanda 02 e seu objetivo principal</p>
-                            <span class="badge bg-primary">Alta</span>
-                            <span class="badge bg-warning text-dark">Aberta</span>
+                            <h5 class="card-title fw-bold">Por Tipo</h5>
+                            <div class="d-flex justify-content-around text-center mt-3">
+                                <div><small class="fw-bold d-block">Tarefa</small><span id="tipoTarefa" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Defeito</small><span id="tipoDefeito" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Melhoria</small><span id="tipoMelhoria" class="fs-4">-</span></div>
+                                <div><small class="fw-bold d-block">Doc.</small><span id="tipoDocumentacao" class="fs-4">-</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-           </section>
+        </section>
+
+        <!-- Seção: Demandas Críticas em Aberto -->
+        <section id="secaoCriticas" class="mb-5">
+            <h4 class="text-white mb-3">
+                Demandas Críticas em Aberto (<span id="qtdCriticasAberto">0</span>)
+            </h4>
+            <div id="listaCriticas" class="row"></div>
+        </section>
+
+        <!-- Seção: Demandas Próximas do Prazo -->
+        <section id="secaoPrazo" class="mb-5">
+            <h4 class="text-white mb-3">
+                Demandas Próximas do Prazo (7 dias ou vencidas) (<span id="qtdProximasPrazo">0</span>)
+            </h4>
+            <div id="listaPrazo" class="row"></div>
+        </section>
     </main>
 
     <script src="../javascript/dashboard.js" defer></script>
-    
+
 </body>
 </html>
