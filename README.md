@@ -38,12 +38,15 @@ Renata Antonia Tadeu Arantes
 
 ## Funcionalidades
 
-- Autenticação de usuários por e-mail e senha.
+- Autenticação de usuários por e-mail e senha (token JWT).
 - Controle de acesso baseado em perfis.
-- Cadastro e acompanhamento de demandas.
+- Cadastro, edição e acompanhamento de demandas.
 - Consulta e filtragem de demandas.
+- Atribuição de responsável, prioridade e prazo (restrita a Administrador e Líder de Projeto), com checagem automática de feriados nacionais (via BrasilAPI) antes de aceitar um novo prazo.
+- Histórico de alterações de cada demanda (criação, edição, responsável, prioridade, prazo), nunca apagável.
 - Acompanhamento de prazos e status.
 - Visualização de informações relacionadas aos projetos.
+- Dashboard com indicadores agregados (por status, prioridade e tipo).
 
 ### Perfis de acesso
 
@@ -87,8 +90,14 @@ Antes de iniciar, é necessário ter instalado:
 
 - Node.js
 - npm
-- Oracle Database
 - Git
+- Oracle Database (ver nota abaixo sobre rodar via Docker)
+
+> **Oracle local via Docker:** como não há instalador nativo do Oracle para macOS (principalmente Apple Silicon), o time roda o banco localmente via Docker, usando a imagem `gvenzl/oracle-free:23-slim`:
+> ```bash
+> docker run -d --name oracle-pi2 -p 1521:1521 -e ORACLE_PASSWORD=SuaSenhaForte123 gvenzl/oracle-free:23-slim
+> ```
+> Cada integrante sobe seu próprio container local, com sua própria senha, e roda os scripts de `banco/` nele. O serviço padrão dessa imagem é `FREEPDB1` (diferente do `XE` usado em outras distribuições do Oracle).
 
 ### 1. Clonar o repositório
 
@@ -120,7 +129,7 @@ Preencha com as seguintes variáveis:
 # Conexão com o Oracle Database
 ORACLE_HOST=localhost
 ORACLE_PORT=1521
-ORACLE_SERVICE=XE
+ORACLE_SERVICE=FREEPDB1
 ORACLE_USER=seu_usuario
 ORACLE_PASSWORD=sua_senha
 
@@ -234,6 +243,9 @@ PI-II-Time-9/
 │   │   │
 │   │   ├── utils/
 │   │   │   └── permissoes.ts
+│   │   │
+│   │   ├── servicos/
+│   │   │   └── feriados.ts
 │   │   │
 │   │   ├── dados/
 │   │   ├── db.ts

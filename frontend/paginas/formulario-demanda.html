@@ -16,7 +16,14 @@ Tela: Cadastro/Edição de Demanda
 <body>
 
     <main>
-        <h1>Cadastro de Demandas</h1>
+        <nav class="barra-navegacao">
+            <a href="dashboard.html" class="btn btn-secundario">Dashboard</a>
+            <a href="listagem-demandas.html" class="btn btn-secundario">Listagem de Demandas</a>
+            <span id="nomeUsuarioLogado"></span>
+            <button type="button" id="botaoSair" class="btn btn-secundario">Sair</button>
+        </nav>
+
+        <h1 id="tituloPagina">Cadastro de Demandas</h1>
 
         <!-- cartão que envolve o toggle + o formulário inteiro (visual "híbrida": console + compositor) -->
         <div class="cartao-demanda">
@@ -122,8 +129,8 @@ Tela: Cadastro/Edição de Demanda
                     <!-- modo cadastro: demanda não existente -> data gerada no cadastro -->
                     <p class="valor-fixo modo-cadastro">Será definida automaticamente</p>
 
-                    <!-- modo edição: exibe data já registrada (exemplo simulado)-->
-                    <p class="valor-fixo modo-edicao">27/08/2026</p>
+                    <!-- modo edição: preenchida de verdade pelo formulario-demanda.js -->
+                    <p id="dataCriacaoReal" class="valor-fixo modo-edicao">-</p>
                 </div>
 
                 <div class="campo-linha">
@@ -133,8 +140,8 @@ Tela: Cadastro/Edição de Demanda
                     <!-- modo cadastro: ainda não houve nenhuma atualização -->
                     <p class="valor-fixo modo-cadastro">Será definida automaticamente</p>
 
-                    <!-- modo edição: exibe a data da última atualização (exemplo simulado) -->
-                    <p class="valor-fixo modo-edicao">28/08/2026</p>
+                    <!-- modo edição: preenchida de verdade pelo formulario-demanda.js -->
+                    <p id="dataAtualizacaoReal" class="valor-fixo modo-edicao">-</p>
                 </div>
 
                 <div class="campo-linha">
@@ -152,6 +159,8 @@ Tela: Cadastro/Edição de Demanda
 
             </aside>
 
+            <p id="mensagem-servidor" class="erro-validacao" role="alert" aria-live="assertive" hidden></p>
+
             <div class="form-acoes col-12">
                 <button type="submit" class="btn btn-primario" id="btn-salvar">Salvar</button>
                 <button type="button" class="btn btn-secundario">Cancelar</button>
@@ -163,6 +172,7 @@ Tela: Cadastro/Edição de Demanda
         </div>
     </main>
    
+    <script src="../javascript/sessao.js" defer></script>
     <script src="../javascript/formulario-demanda.js" defer></script>
 
 

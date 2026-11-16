@@ -21,6 +21,17 @@ Tela: Dashboard
         <h1 class="text-white">DASHBOARD</h1>
     </header>
 
+    <nav class="container d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <div class="d-flex gap-2">
+            <a href="formulario-demanda.html" class="btn btn-success rounded-pill fw-bold">Nova Demanda</a>
+            <a href="listagem-demandas.html" class="btn btn-secondary rounded-pill fw-bold">Listagem de Demandas</a>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <span id="nomeUsuarioLogado" class="text-white"></span>
+            <button type="button" id="botaoSair" class="btn btn-outline-light rounded-pill btn-sm">Sair</button>
+        </div>
+    </nav>
+
     <main class="container">
         <!-- Alerta de erro da API (exibido na tela caso a requisição falhe) -->
         <div id="erroApi" class="alert alert-danger d-none" role="alert"></div>
@@ -146,6 +157,7 @@ Tela: Dashboard
         </section>
     </main>
 
+    <script src="../javascript/sessao.js" defer></script>
     <script src="../javascript/dashboard.js" defer></script>
 
 </body>

@@ -7,6 +7,20 @@ Depende das variáveis e classes de formulario-demanda.css,
 que deve ser carregado antes deste arquivo.
 */
 
+/* Barra de navegação entre telas (Reunião 5). */
+.barra-navegacao {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.barra-navegacao #nomeUsuarioLogado {
+    margin-left: auto;
+    font-size: 0.85rem;
+}
+
 /* Barra de filtros. */
 .barra-filtros {
     display: flex;

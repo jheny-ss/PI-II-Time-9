@@ -133,6 +133,10 @@ async function carregarDashboard() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    // exige login (Reunião 5) - sem token, manda de volta pro login.html
+    exigirLogin();
+    montarBarraUsuario("nomeUsuarioLogado", "botaoSair");
+
     const formBusca = document.getElementById("formBusca");
     const inputBusca = document.getElementById("inputBusca");
     const erroBusca = document.getElementById("erroBusca");
