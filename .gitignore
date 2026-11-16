@@ -2,3 +2,6 @@
 # Dependências do Node
 node_modules/
 .vscode/
+
+# Credenciais locais (senha do banco etc.)
+.env
