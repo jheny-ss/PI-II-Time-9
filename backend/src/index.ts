@@ -6,6 +6,7 @@ import demandasRouter from './rotas/demandas.js';
 import detalhesRouter from './rotas/detalhes.js';
 import dashboardRouter from './rotas/dashboard.js';
 import listagemRouter from './rotas/listagem.js';
+import historicoRouter from './rotas/historico.js';
 // Cada integrante importa aqui o arquivo da sua rota, por exemplo:
 // import demandasRouter from './rotas/demandas';
 
@@ -17,6 +18,18 @@ const PORTA = Number(process.env.PORT) || 3000;
 
 // Permite ler o corpo das requisições em JSON
 app.use(express.json());
+
+// Libera requisições do Front-End no navegador (CORS)
+app.use((req: Request, res: Response, next: NextFunction) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(204);
+        return;
+    }
+    next();
+});
 
 // Rota de verificação: confirma que o servidor está no ar
 app.get('/', (_req: Request, res: Response) => {
@@ -30,6 +43,7 @@ app.use(dashboardRouter);
 app.use(listagemRouter);
 app.use(demandasRouter);
 app.use(detalhesRouter);
+app.use(historicoRouter);
 
 // 404: rota inexistente
 app.use((_req: Request, res: Response) => {
