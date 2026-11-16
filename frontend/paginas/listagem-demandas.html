@@ -19,12 +19,20 @@ preenchidos pelo arquivo listagem-demandas.js.
     <link rel="stylesheet" href="../css/listagem-demandas.css">
 
     <!-- A validação da Reunião 3 deve vir antes da listagem. -->
+    <script src="../javascript/sessao.js" defer></script>
     <script src="../javascript/validacao-listagem.js" defer></script>
     <script src="../javascript/listagem-demandas.js" defer></script>
 </head>
 <body>
 
     <main>
+        <nav class="barra-navegacao">
+            <a href="dashboard.html" class="btn btn-secundario">Dashboard</a>
+            <a href="formulario-demanda.html" class="btn btn-primario">Nova Demanda</a>
+            <span id="nomeUsuarioLogado"></span>
+            <button type="button" id="botaoSair" class="btn btn-secundario">Sair</button>
+        </nav>
+
         <h1>Listagem de Demandas</h1>
 
         <form id="form-filtros" class="barra-filtros">

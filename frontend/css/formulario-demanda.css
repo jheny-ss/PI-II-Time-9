@@ -221,6 +221,31 @@ main {
     cursor: not-allowed;
 }
 
+/* Barra de navegação entre telas (Reunião 5). */
+.barra-navegacao {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.barra-navegacao a.btn {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.barra-navegacao #nomeUsuarioLogado {
+    margin-left: auto;
+    font-size: 0.85rem;
+}
+
+/* campo somente leitura (reunião 5: responsável/prioridade/prazo pra quem não
+   pode reatribuir, mesmo visual das datas automáticas) */
+.campo-linha .valor-fixo.modo-leitura-rbac {
+    display: block;
+}
+
 
 /* label checkbox estilizado como botão, serve como controle de visualização */
 .switch-modo {
@@ -333,4 +358,10 @@ main {
 
 .erro-validacao:empty {
     display: none;
+}
+
+/* mesma caixa de mensagem, mas pra respostas de sucesso da api (reuniao 5) */
+.erro-validacao.mensagem-sucesso {
+    background-color: var(--cor-verde-claro, #b9ffc9);
+    color: #0a2e1a;
 }
