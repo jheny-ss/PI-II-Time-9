@@ -162,4 +162,27 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 });
 
+// get /usuarios: lista usuários ativos (id + nome), usada pelo formulário de cadastro/edição
+// de demanda para montar o select de "responsável" com dados reais do banco.
+router.get('/usuarios', async (_req: Request, res: Response) => {
+    let conexao: oracledb.Connection | undefined;
+
+    try {
+        conexao = await getConn();
+
+        const resultado = await conexao.execute(
+            `SELECT ID_USUARIO, NOME FROM USUARIO WHERE ATIVO = 'S' ORDER BY NOME`
+        );
+
+        res.status(200).json(resultado.rows);
+    } catch (erro) {
+        console.error('Erro ao listar usuários:', erro);
+        res.status(500).json({ erro: 'Erro interno ao listar usuários.' });
+    } finally {
+        if (conexao) {
+            await conexao.close();
+        }
+    }
+});
+
 export default router;

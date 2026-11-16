@@ -22,15 +22,11 @@ Observações:
 import express from 'express';
 import type { Request, Response } from 'express';
 import {
-    demandas,
-    projetos,
-    usuarios,
     TIPOS_DEMANDA,
     PRIORIDADES,
     STATUS_DEMANDA,
 } from '../dados/banco.js';
-
-import type { Demanda } from '../dados/banco.js';
+import { getConn } from '../db.js';
 
 const router = express.Router();
 
@@ -88,28 +84,20 @@ function lerId(texto: string): number | null {
     return null;
 }
 
-/**
- * Devolve um número que representa a posição da demanda no campo escolhido.
- * Assim conseguimos comparar qualquer campo da mesma forma:
- *   - prioridade: posição na lista (Crítica = 0, Alta = 1, Média = 2, Baixa = 3)
- *   - status: posição no fluxo (Aberta = 0, ... , Cancelada = 4)
- *   - dataCriacao / prazo: a data convertida em número
- */
-function valorParaOrdenar(demanda: Demanda, campo: string): number {
-    if (campo === 'prioridade') {
-        return PRIORIDADES.indexOf(demanda.prioridade);
+// traduz o campo de ordenação (já validado contra CAMPOS_ORDENACAO) pra uma coluna
+// real da view - nunca monta isso com texto vindo direto do cliente, exatamente
+// pra evitar que um valor poderia ser usado pra injetar sql no order by.
+function colunaDeOrdenacao(campo: string): string {
+    switch (campo) {
+        case 'prioridade': return 'NIVEL_PRIORIDADE';
+        case 'dataCriacao': return 'DATA_CRIACAO';
+        case 'prazo': return 'PRAZO_FINALIZACAO';
+        case 'status': return 'ORDEM_STATUS';
+        default: return 'ID_DEMANDA';
     }
-    if (campo === 'status') {
-        return STATUS_DEMANDA.indexOf(demanda.status);
-    }
-    if (campo === 'dataCriacao') {
-        return Date.parse(demanda.dataCriacao);
-    }
-    // campo === 'prazo' (os casos sem prazo são tratados antes, na ordenação)
-    return Date.parse(demanda.prazoFinalizacao as string);
 }
 
-router.get('/demandas', (req: Request, res: Response) => {
+router.get('/demandas', async (req: Request, res: Response) => {
     // 1) Cada parâmetro deve vir uma única vez e como texto.
     //    (?status=Aberta&status=Alta, por exemplo, não é aceito.)
     for (let i = 0; i < PARAMETROS.length; i++) {
@@ -128,7 +116,8 @@ router.get('/demandas', (req: Request, res: Response) => {
     const textoTipo = String(req.query.tipo ?? '').trim();
     const textoResponsavel = String(req.query.responsavel ?? '').trim();
     const textoProjeto = String(req.query.projeto ?? '').trim();
-    const textoBusca = normalizar(String(req.query.busca ?? ''));
+    const textoBuscaBruto = String(req.query.busca ?? '').trim();
+    const textoBusca = normalizar(textoBuscaBruto);
     const textoOrdenarPor = String(req.query.ordenarPor ?? '').trim();
     const textoOrdem = String(req.query.ordem ?? '').trim();
 
@@ -211,88 +200,82 @@ router.get('/demandas', (req: Request, res: Response) => {
         sentido = sentidoValido;
     }
 
-    // 4) Filtra e busca: só entra no resultado quem passa por TODOS os testes
-    const resultado: Demanda[] = [];
-    for (const demanda of demandas) {
-        if (status !== null && demanda.status !== status) {
-            continue;
-        }
-        if (prioridade !== null && demanda.prioridade !== prioridade) {
-            continue;
-        }
-        if (tipo !== null && demanda.tipo !== tipo) {
-            continue;
-        }
-        if (responsavelId !== null && demanda.responsavelId !== responsavelId) {
-            continue;
-        }
-        if (projetoId !== null && demanda.projetoId !== projetoId) {
-            continue;
-        }
-        if (textoBusca !== '') {
-            const noTitulo = normalizar(demanda.titulo).includes(textoBusca);
-            const naDescricao = normalizar(demanda.descricao).includes(textoBusca);
-            if (!noTitulo && !naDescricao) {
-                continue;
-            }
-        }
-        resultado.push(demanda);
+    // 4) Monta o WHERE dinamicamente, só com os filtros que vieram, sempre com bind
+    //    variables (nunca concatenando o valor do cliente direto na query)
+    const condicoes: string[] = [];
+    const binds: Record<string, unknown> = {};
+
+    if (status !== null) {
+        condicoes.push('STATUS = :status');
+        binds.status = status;
+    }
+    if (prioridade !== null) {
+        condicoes.push('PRIORIDADE = :prioridade');
+        binds.prioridade = prioridade;
+    }
+    if (tipo !== null) {
+        condicoes.push('TIPO = :tipo');
+        binds.tipo = tipo;
+    }
+    if (responsavelId !== null) {
+        condicoes.push('ID_RESPONSAVEL = :responsavelId');
+        binds.responsavelId = responsavelId;
+    }
+    if (projetoId !== null) {
+        condicoes.push('ID_PROJETO = :projetoId');
+        binds.projetoId = projetoId;
+    }
+    if (textoBusca !== '') {
+        // usa o texto bruto (só com espaços nas pontas removidos), não o normalizado:
+        // o normalizado tira os acentos, e comparar isso contra a coluna com acento
+        // nunca daria match nenhum. ignora maiúsculas/minúsculas (UPPER dos dois lados),
+        // mas não ignora acentos como o array em memória fazia - é uma simplificação.
+        condicoes.push('(UPPER(TITULO) LIKE UPPER(:busca) OR UPPER(DESCRICAO) LIKE UPPER(:busca))');
+        binds.busca = `%${textoBuscaBruto}%`;
     }
 
-    // 5) Ordena (se foi pedido). Em empate, a ordem original (por id) é mantida.
-    if (campoOrdenacao !== null) {
-        const campo = campoOrdenacao;
-        resultado.sort((a, b) => {
-            // demandas sem prazo vão sempre para o fim, em qualquer sentido
-            if (campo === 'prazo') {
-                if (a.prazoFinalizacao === null && b.prazoFinalizacao === null) {
-                    return 0;
-                }
-                if (a.prazoFinalizacao === null) {
-                    return 1;
-                }
-                if (b.prazoFinalizacao === null) {
-                    return -1;
-                }
-            }
+    const whereSql = condicoes.length > 0 ? `WHERE ${condicoes.join(' AND ')}` : '';
 
-            const valorA = valorParaOrdenar(a, campo);
-            const valorB = valorParaOrdenar(b, campo);
+    // 5) Monta o ORDER BY (coluna já vem de uma lista fixa, nunca do texto do cliente).
+    //    Demandas sem prazo sempre ficam no fim, em qualquer sentido (NULLS LAST do Oracle).
+    const coluna = colunaDeOrdenacao(campoOrdenacao ?? '');
+    const direcao = sentido === 'desc' ? 'DESC' : 'ASC';
+    const nullsLast = coluna === 'PRAZO_FINALIZACAO' ? ' NULLS LAST' : '';
+    const orderBySql = `ORDER BY ${coluna} ${direcao}${nullsLast}`;
 
-            let comparacao = 0;
-            if (valorA < valorB) {
-                comparacao = -1;
-            } else if (valorA > valorB) {
-                comparacao = 1;
-            }
+    let conn;
+    try {
+        conn = await getConn();
 
-            if (sentido === 'desc') {
-                comparacao = -comparacao;
-            }
-            return comparacao;
-        });
+        const resultado = await conn.execute(
+            `SELECT ID_DEMANDA, TITULO, TIPO, PRIORIDADE, STATUS, PROJETO, RESPONSAVEL,
+                    DATA_CRIACAO, PRAZO_FINALIZACAO
+               FROM VW_DEMANDA_LISTAGEM
+               ${whereSql}
+               ${orderBySql}`,
+            binds
+        );
+
+        // 6) Traduz os nomes de coluna do oracle pro formato que a tela espera
+        const lista = (resultado.rows as any[]).map((linha) => ({
+            id: linha.ID_DEMANDA,
+            titulo: linha.TITULO,
+            tipo: linha.TIPO,
+            prioridade: linha.PRIORIDADE,
+            status: linha.STATUS,
+            projeto: linha.PROJETO,
+            responsavel: linha.RESPONSAVEL, // null = sem responsável
+            dataCriacao: linha.DATA_CRIACAO,
+            prazoFinalizacao: linha.PRAZO_FINALIZACAO,
+        }));
+
+        res.status(200).json({ total: lista.length, demandas: lista });
+    } catch (erro) {
+        console.error('Erro ao listar demandas:', erro);
+        res.status(500).json({ erro: 'Erro ao consultar as demandas.' });
+    } finally {
+        if (conn) await conn.close();
     }
-
-    // 6) Monta a resposta trocando os ids de projeto e responsável pelos nomes
-    const lista = [];
-    for (const demanda of resultado) {
-        const projeto = projetos.find((p) => p.id === demanda.projetoId);
-        const responsavel = usuarios.find((u) => u.id === demanda.responsavelId);
-
-        lista.push({
-            id: demanda.id,
-            titulo: demanda.titulo,
-            tipo: demanda.tipo,
-            prioridade: demanda.prioridade,
-            status: demanda.status,
-            projeto: projeto ? projeto.nome : null,
-            responsavel: responsavel ? responsavel.nome : null, // null = sem responsável
-            dataCriacao: demanda.dataCriacao,
-            prazoFinalizacao: demanda.prazoFinalizacao, // 'AAAA-MM-DD' ou null
-        });
-    }
-
-    res.status(200).json({ total: lista.length, demandas: lista });
 });
 
 export default router;
