@@ -30,9 +30,11 @@ Tela: Cadastro/Edição de Demanda
             <div class="cartao-demanda-barra"></div>
             <div class="cartao-demanda-inner">
 
-        <!-- Modo Toggle apenas CSS ainda -->
+        <!-- o modo (cadastro/edição) agora é decidido sozinho pelo formulario-demanda.js, pela
+             presença de ?id= na url - o checkbox continua controlando o css por trás, só o
+             controle visual (que deixava a pessoa trocar manualmente) foi escondido. -->
         <input type="checkbox" id="modo-toggle" hidden>
-        <label for="modo-toggle" class="switch-modo">
+        <label for="modo-toggle" class="switch-modo" hidden>
             <span class="opcao-cadastro">Cadastro</span>
             <span class="opcao-edicao">Edição</span>
         </label>

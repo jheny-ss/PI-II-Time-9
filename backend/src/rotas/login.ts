@@ -9,6 +9,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import oracledb from 'oracledb';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = Router();
 
@@ -164,7 +165,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
 // get /usuarios: lista usuários ativos (id + nome), usada pelo formulário de cadastro/edição
 // de demanda para montar o select de "responsável" com dados reais do banco.
-router.get('/usuarios', async (_req: Request, res: Response) => {
+router.get('/usuarios', autenticar, async (_req: Request, res: Response) => {
     let conexao: oracledb.Connection | undefined;
 
     try {

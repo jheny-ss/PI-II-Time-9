@@ -45,7 +45,10 @@ function montarLinha(demanda) {
         <td>${escaparHtml(demanda.responsavel ?? "Não atribuído")}</td>
         <td>${formatarData(demanda.dataCriacao)}</td>
         <td>${demanda.prazoFinalizacao ? formatarData(demanda.prazoFinalizacao) : "Sem prazo"}</td>
-        <td><a href="formulario-demanda.html?id=${demanda.id}" class="btn btn-primario">Editar</a></td>
+        <td>
+            <a href="detalhes-tela.html?id=${demanda.id}" class="btn btn-secundario">Ver</a>
+            <a href="formulario-demanda.html?id=${demanda.id}" class="btn btn-primario">Editar</a>
+        </td>
     `;
     return linha;
 }
@@ -79,7 +82,9 @@ async function carregarDemandas() {
     resumoResultados.textContent = "Carregando...";
 
     try {
-        const resposta = await fetch(`${API_URL}/demandas?${montarParametros().toString()}`);
+        const resposta = await fetch(`${API_URL}/demandas?${montarParametros().toString()}`, {
+            headers: { "Authorization": `Bearer ${tokenSessao()}` }
+        });
         const dados = await resposta.json();
 
         // a api devolve 400 com mensagem clara quando algum filtro é inválido

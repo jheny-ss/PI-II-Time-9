@@ -33,7 +33,7 @@ function criarCardDemanda(demanda) {
 
     return `
         <div class="col-12 col-sm-6 col-md-4 mb-4">
-            <div class="card h-100 text-center custom-demanda-card">
+            <div class="card h-100 text-center custom-demanda-card card-clicavel" data-id="${demanda.id}">
                 <div class="card-body d-flex flex-column justify-content-between">
                     <div>
                         <h5 class="card-title fw-bold">#${demanda.id} - ${escaparHtml(demanda.titulo)}</h5>
@@ -115,7 +115,9 @@ async function carregarDashboard() {
     erroApi.textContent = "";
 
     try {
-        const resposta = await fetch(`${API_URL}/dashboard`);
+        const resposta = await fetch(`${API_URL}/dashboard`, {
+            headers: { "Authorization": `Bearer ${tokenSessao()}` }
+        });
         const dados = await resposta.json();
 
         // Se a API retornar erro (400, 404, 500...), exibe a mensagem na tela
@@ -144,6 +146,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Carrega o dashboard assim que a página abre
     carregarDashboard();
+
+    // Clicar em qualquer card de demanda leva aos detalhes dela (um listener só,
+    // delegado no container - os cards são recriados toda vez que a lista é filtrada)
+    function irParaDetalhes(evento) {
+        const card = evento.target.closest(".card-clicavel");
+        if (card) window.location.href = `detalhes-tela.html?id=${card.dataset.id}`;
+    }
+    document.getElementById("listaCriticas").addEventListener("click", irParaDetalhes);
+    document.getElementById("listaPrazo").addEventListener("click", irParaDetalhes);
 
     // Validação de busca (Reunião 3) + filtragem dos cards
     formBusca.addEventListener("submit", function (event) {

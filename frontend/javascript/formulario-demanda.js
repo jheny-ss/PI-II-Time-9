@@ -264,9 +264,10 @@ function esconderMensagemServidor() {
 // busca os projetos e usuários reais do banco e substitui as opções estáticas de exemplo
 async function carregarListasReais() {
     try {
+        const cabecalhos = { "Authorization": `Bearer ${tokenSessao()}` };
         const [respostaProjetos, respostaUsuarios] = await Promise.all([
-            fetch(`${API_URL}/projetos`),
-            fetch(`${API_URL}/usuarios`)
+            fetch(`${API_URL}/projetos`, { headers: cabecalhos }),
+            fetch(`${API_URL}/usuarios`, { headers: cabecalhos })
         ]);
 
         const projetos = await respostaProjetos.json();
@@ -323,7 +324,9 @@ async function carregarDemandaParaEdicao() {
     campoProjeto.disabled = true;
 
     try {
-        const resposta = await fetch(`${API_URL}/demandas/${idEdicao}`);
+        const resposta = await fetch(`${API_URL}/demandas/${idEdicao}`, {
+            headers: { "Authorization": `Bearer ${tokenSessao()}` }
+        });
         const demanda = await resposta.json();
 
         if (!resposta.ok) {

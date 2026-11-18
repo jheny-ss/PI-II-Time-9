@@ -27,6 +27,7 @@ import {
     STATUS_DEMANDA,
 } from '../dados/banco.js';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = express.Router();
 
@@ -97,7 +98,8 @@ function colunaDeOrdenacao(campo: string): string {
     }
 }
 
-router.get('/demandas', async (req: Request, res: Response) => {
+// autenticar adicionado na Reunião 5: toda rota de leitura passou a exigir login
+router.get('/demandas', autenticar, async (req: Request, res: Response) => {
     // 1) Cada parâmetro deve vir uma única vez e como texto.
     //    (?status=Aberta&status=Alta, por exemplo, não é aceito.)
     for (let i = 0; i < PARAMETROS.length; i++) {

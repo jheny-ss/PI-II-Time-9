@@ -4,11 +4,12 @@ Autor: Eduardo Zinetti Betini
 
 import { Router, Request, Response } from 'express';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = Router();
 
 // get /projetos: lista os projetos ativos direto do banco
-router.get('/projetos', async (req: Request, res: Response) => {
+router.get('/projetos', autenticar, async (req: Request, res: Response) => {
     let conn;
     try {
         conn = await getConn();

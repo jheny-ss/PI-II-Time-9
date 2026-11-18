@@ -6,6 +6,7 @@ import { Router, Request, Response } from 'express';
 import oracledb from 'oracledb';
 import type { Connection } from 'oracledb';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = Router();
 
@@ -51,7 +52,8 @@ function montarComentario(linha: any) {
 
 
 // GET /demandas/:id
-router.get('/demandas/:id', async (req: Request<{ id: string }>, res: Response) => {
+// autenticar adicionado na Reunião 5: toda rota de leitura passou a exigir login
+router.get('/demandas/:id', autenticar, async (req: Request<{ id: string }>, res: Response) => {
     const id = lerId(req.params.id);
 
     // 400: o id da URL não é um número válido
@@ -121,7 +123,8 @@ router.get('/demandas/:id', async (req: Request<{ id: string }>, res: Response) 
 
 
 // GET /demandas/:id/comentarios
-router.get('/demandas/:id/comentarios', async (req: Request<{ id: string }>, res: Response) => {
+// autenticar adicionado na Reunião 5: toda rota de leitura passou a exigir login
+router.get('/demandas/:id/comentarios', autenticar, async (req: Request<{ id: string }>, res: Response) => {
     const id = lerId(req.params.id);
 
     if (id === null) {
@@ -157,7 +160,7 @@ router.get('/demandas/:id/comentarios', async (req: Request<{ id: string }>, res
 });
 
 // POST /demandas/:id/comentarios
-router.post('/demandas/:id/comentarios', async (req: Request<{ id: string }>, res: Response) => {
+router.post('/demandas/:id/comentarios', autenticar, async (req: Request<{ id: string }>, res: Response) => {
     const id = lerId(req.params.id);
 
     if (id === null) {
@@ -165,8 +168,11 @@ router.post('/demandas/:id/comentarios', async (req: Request<{ id: string }>, re
         return;
     }
 
-    // No Express 5, req.body é undefined quando nenhum corpo é enviado
-    const { usuarioId, texto } = req.body ?? {};
+    // No Express 5, req.body é undefined quando nenhum corpo é enviado.
+    // usuarioId vem de quem está logado (do token), nunca do corpo da requisição -
+    // senão qualquer pessoa autenticada poderia postar um comentário em nome de outra.
+    const { texto } = req.body ?? {};
+    const usuarioId = req.usuario!.idUsuario;
     const erros: string[] = [];
 
     // o texto não pode ser vazio nem só espaços, e precisa caber na coluna do banco
@@ -174,13 +180,6 @@ router.post('/demandas/:id/comentarios', async (req: Request<{ id: string }>, re
         erros.push('O campo "texto" é obrigatório e não pode ser vazio.');
     } else if (Buffer.byteLength(texto.trim(), 'utf8') > TAMANHO_MAXIMO_TEXTO) {
         erros.push('O texto do comentário é muito longo.');
-    }
-
-    // o usuarioId precisa vir e ser um número inteiro (a existência é conferida no banco abaixo)
-    if (usuarioId === undefined || usuarioId === null) {
-        erros.push('O campo "usuarioId" é obrigatório.');
-    } else if (!Number.isInteger(usuarioId) || usuarioId <= 0) {
-        erros.push('O campo "usuarioId" deve ser um número inteiro positivo.');
     }
 
     let conn;
