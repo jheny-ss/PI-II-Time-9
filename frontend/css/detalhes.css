@@ -133,6 +133,77 @@ body {
     max-height: 400px;
 }
 
+/* Mensagem de erro geral da tela (Reunião 5) */
+.erro-detalhes {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto 1rem;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background-color: var(--cor-vermelho);
+    color: var(--cor-texto);
+    font-weight: bold;
+}
+
+.erro-detalhes[hidden] {
+    display: none;
+}
+
+/* Comentários (Reunião 5) */
+.secao-comentarios {
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 1rem;
+}
+
+.secao-comentarios h2 {
+    font-size: 1.3rem;
+}
+
+.lista-comentarios {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.lista-comentarios li {
+    border: 2px solid var(--cor-roxo);
+    border-radius: 10px;
+    padding: 10px 16px;
+}
+
+.lista-comentarios .autor-comentario {
+    color: var(--cor-mint);
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.lista-comentarios .data-comentario {
+    color: var(--cor-texto);
+    opacity: 0.7;
+    font-size: 0.8rem;
+    margin-left: 8px;
+}
+
+.form-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px;
+}
+
+.form-comentario textarea {
+    width: 100%;
+    min-height: 80px;
+    background-color: transparent;
+    border: 2px solid var(--cor-mint);
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: var(--cor-texto);
+    font-family: inherit;
+}
+
 /* Ajustes gerais pra telas médias (tablet) */
 @media (max-width: 768px) {
   .cabecalho h1 {

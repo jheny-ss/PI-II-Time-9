@@ -5,10 +5,12 @@ Descrição: Rota GET /dashboard conectada ao Oracle (VW_DEMANDA_LISTAGEM)
 
 import { Router, Request, Response } from 'express';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = Router();
 
-router.get('/dashboard', async (_req: Request, res: Response) => {
+// autenticar adicionado na Reunião 5: toda rota de leitura passou a exigir login
+router.get('/dashboard', autenticar, async (_req: Request, res: Response) => {
     let conn;
 
     try {

@@ -5,6 +5,7 @@ Descrição: Registro automático e consulta do histórico de alterações das d
 
 import { Router, Request, Response } from 'express';
 import { getConn } from '../db.js';
+import { autenticar } from '../middlewares/autenticar.js';
 
 const router = Router();
 
@@ -107,7 +108,8 @@ export async function registrarHistorico(
 }
 
 // GET /demandas/:id/historico -> Lista o histórico de alterações de uma demanda
-router.get('/demandas/:id/historico', async (req: Request<{ id: string }>, res: Response) => {
+// autenticar adicionado na Reunião 5: toda rota de leitura passou a exigir login
+router.get('/demandas/:id/historico', autenticar, async (req: Request<{ id: string }>, res: Response) => {
     const id = lerId(req.params.id);
 
     if (id === null) {
